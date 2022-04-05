@@ -1,7 +1,4 @@
-import express from "express";
-
-const app = express();
-
-app.use(express.json());
+import { app } from "./routes";
+import "./shared/container";
 
 app.listen(3333);

@@ -1,7 +1,15 @@
-import { Router } from "express";
+import express from "express";
+import "reflect-metadata"
+
 
 import { produtosRoutes } from "./produtos.routes";
+import { usuariosRoutes } from "./usuarios.routes";
 
-const router = Router();
+const app = express();
 
-router.use("/produtos", produtosRoutes);
+app.use(express.json());
+
+app.use("/produtos", produtosRoutes);
+app.use("/usuarios", usuariosRoutes);
+
+export { app };
