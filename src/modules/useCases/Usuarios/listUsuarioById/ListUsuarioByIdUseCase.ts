@@ -1,3 +1,4 @@
+import { inject, injectable } from "tsyringe";
 import { Usuario } from "../../../model/Usuario";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
 
@@ -5,13 +6,16 @@ interface IRequest {
     id: string;
 }
 
+@injectable()
 class ListUsuarioByIdUseCase {
-    constructor( private usuariosRepository: IUsuariosRepository) {}
+    constructor(
+        @inject("UsuariosRepository")
+        private usuariosRepository: IUsuariosRepository) { }
 
-    execute({ id }: IRequest): Usuario {
-        const usuario = this.usuariosRepository.findById(id);
+    async execute({ id }: IRequest): Promise<Usuario> {
+        const usuario = await this.usuariosRepository.findById(id);
 
-        if(!usuario) {
+        if (!usuario) {
             throw new Error("Usuario não econtrado");
         }
 

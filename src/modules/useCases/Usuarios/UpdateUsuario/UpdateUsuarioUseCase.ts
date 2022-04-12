@@ -1,3 +1,4 @@
+import { inject, injectable } from "tsyringe";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
 
 interface IRequest {
@@ -7,29 +8,30 @@ interface IRequest {
     password: string;
 }
 
+@injectable()
 class UpdateUsuarioUseCase {
-    constructor( private usuariosRepository: IUsuariosRepository) {}
+    constructor(
+        @inject("UsuariosRepository")
+        private usuariosRepository: IUsuariosRepository) { }
 
-    execute({nome, username, password, id}: IRequest): void {
-        const usuario = this.usuariosRepository.findById(id);
+    async execute({ nome, username, password, id }: IRequest): Promise<void> {
+        const usuario = await this.usuariosRepository.findById(id);
 
-        if(!usuario) {
+        if (!usuario) {
             throw new Error("Usuario inválido");
         }
 
-        const usernameIsUsed = this.usuariosRepository.findByUsername(username);
+        const usernameIsUsed = await this.usuariosRepository.findByUsername(username);
 
-        if(usernameIsUsed) {
+        if (usernameIsUsed) {
             throw new Error("Username já existe");
         }
 
-        if(password.length < 5 || password.length > 15){
+        if (password.length < 5 || password.length > 15) {
             throw new Error("Password deve ter entre 5 e 15 caracteres");
         }
 
-        nome ? usuario.nome = nome : null;
-        username ? usuario.username = username : null;
-        password ? usuario.password = password : null;
+        await this.usuariosRepository.update({ nome, username, password, id });
     }
 }
 

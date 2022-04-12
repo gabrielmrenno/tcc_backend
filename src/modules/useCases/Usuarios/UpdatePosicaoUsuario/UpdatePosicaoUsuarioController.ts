@@ -1,16 +1,17 @@
 import { Request, Response } from "express";
+import { container } from "tsyringe";
 import { UpdatePosicaoUsuarioUseCase } from "./UpdatePosicaoUsuarioUseCase";
 
 
 class UpdatePosicaoUsuarioController {
-    constructor(private updatePosicaoUsuarioUseCase: UpdatePosicaoUsuarioUseCase) { }
-
-    handle(req: Request, res: Response): Response {
+    async handle(req: Request, res: Response): Promise<Response> {
         try {
             const { id } = req.params;
-            const { posição, isAdmin } = req.body;
+            const { posicao } = req.body;
 
-            this.updatePosicaoUsuarioUseCase.execute({ id, posição, isAdmin });
+            const updatePosicaoUsuarioUseCase = container.resolve(UpdatePosicaoUsuarioUseCase)
+
+            await updatePosicaoUsuarioUseCase.execute({ id, posicao });
 
             return res.status(201).send();
         } catch (err) {

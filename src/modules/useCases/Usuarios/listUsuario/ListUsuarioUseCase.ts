@@ -1,13 +1,16 @@
+import { inject, injectable } from "tsyringe";
 import { Usuario } from "../../../model/Usuario";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
-
+@injectable()
 class ListUsuarioUseCase {
-    constructor( private usuariosRepository: IUsuariosRepository) {}
+    constructor(
+        @inject("UsuariosRepository")
+        private usuariosRepository: IUsuariosRepository) { }
 
-    execute(): Usuario[] {
-        const usuarios = this.usuariosRepository.list();
+    async execute(): Promise<Usuario[]> {
+        const usuarios = await this.usuariosRepository.list();
 
-        if(usuarios.length === 0) {
+        if (usuarios.length === 0) {
             throw new Error("Lista de usuários vazia");
         }
 

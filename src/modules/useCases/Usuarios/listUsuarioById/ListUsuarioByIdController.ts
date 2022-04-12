@@ -1,18 +1,19 @@
 import { Request, Response } from "express";
+import { container } from "tsyringe";
 import { ListUsuarioByIdUseCase } from "./ListUsuarioByIdUseCase";
 
 
 class ListUsuarioByIdController {
-    constructor(private listUsuarioByIdUseCase: ListUsuarioByIdUseCase) { }
-
-    handle(req: Request, res: Response): Response {
+    async handle(req: Request, res: Response): Promise<Response> {
         try {
             const { id } = req.params;
 
-            const usuario = this.listUsuarioByIdUseCase.execute({id});
+            const listUsuarioByIdUseCase = container.resolve(ListUsuarioByIdUseCase)
+
+            const usuario = await listUsuarioByIdUseCase.execute({ id });
 
             return res.status(200).json(usuario);
-        } catch (err){
+        } catch (err) {
             return res.status(404).json({ error: err.message });
         }
     }

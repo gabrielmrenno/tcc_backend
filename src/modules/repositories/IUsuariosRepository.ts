@@ -1,4 +1,5 @@
 import { Usuario } from "../model/Usuario";
+import { IUpdateIsAdminDTO } from "../useCases/Usuarios/UpdateIsAdmin/UpdateIsAdminUseCase";
 
 
 interface ICreateUsuarioDTO {
@@ -7,23 +8,30 @@ interface ICreateUsuarioDTO {
     password: string;
     posicao: string;
 }
-
-interface ILoginUsuarioDTO {
+interface IUpdateUsuarioDTO {
     nome: string;
     username: string;
     password: string;
+    id: string;
+}
+interface IUpdatePosicaoUsuarioDTO {
+    posicao: string;
+    id: string;
 }
 
 interface IUsuariosRepository {
     create({ nome, username, password, posicao }: ICreateUsuarioDTO): Promise<void>;
 
     findByUsername(username: string): Promise<Usuario>;
-    findByLogin({ username, password }: ILoginUsuarioDTO): Usuario;
-    findById(id: string): Usuario;
+    findById(id: string): Promise<Usuario>;
 
-    list(): Usuario[];
+    list(): Promise<Usuario[]>;
 
-    delete(usuario: Usuario): void;
+    update({ nome, username, password, id }: IUpdateUsuarioDTO): Promise<void>;
+    updatePosicao({ posicao, id }: IUpdatePosicaoUsuarioDTO): Promise<void>;
+    updateIsAdmin({ id, isAdmin }: IUpdateIsAdminDTO): Promise<void>;
+
+    delete(id: string): Promise<void>;
 }
 
-export { IUsuariosRepository, ILoginUsuarioDTO, ICreateUsuarioDTO };
+export { IUsuariosRepository, ICreateUsuarioDTO, IUpdateUsuarioDTO, IUpdatePosicaoUsuarioDTO };

@@ -1,35 +1,34 @@
 import { Router } from "express";
 import { CreateUsuarioController } from "../modules/useCases/Usuarios/createUsuario/CreateUsuarioController";
-import { deleteUsuarioController } from "../modules/useCases/Usuarios/deleteUsuario";
-import { listUsuarioController } from "../modules/useCases/Usuarios/listUsuario";
-import { listUsuarioByIdController } from "../modules/useCases/Usuarios/listUsuarioById";
-import { updatePosicaoUsuarioController } from "../modules/useCases/Usuarios/UpdatePosicaoUsuario";
-import { updateUsuarioController } from "../modules/useCases/Usuarios/UpdateUsuario";
+import { DeleteUsuarioController } from "../modules/useCases/Usuarios/deleteUsuario/DeleteUsuarioController";
+import { ListUsuarioController } from "../modules/useCases/Usuarios/listUsuario/ListUsuarioController";
+import { ListUsuarioByIdController } from "../modules/useCases/Usuarios/listUsuarioById/ListUsuarioByIdController";
+import { UpdateIsAdminController } from "../modules/useCases/Usuarios/UpdateIsAdmin/UpdateIsAdminController";
+import { UpdatePosicaoUsuarioController } from "../modules/useCases/Usuarios/UpdatePosicaoUsuario/UpdatePosicaoUsuarioController";
+import { UpdateUsuarioController } from "../modules/useCases/Usuarios/UpdateUsuario/UpdateUsuarioController";
 
 const usuariosRoutes = Router();
 
 const createUsuarioController = new CreateUsuarioController();
+const deleteUsuarioController = new DeleteUsuarioController();
+const listUsuarioController = new ListUsuarioController();
+const listUsuarioByIdController = new ListUsuarioByIdController();
+const updateUsuarioController = new UpdateUsuarioController();
+const updatePosicaoUsuarioController = new UpdatePosicaoUsuarioController();
+const updateIsAdminUsuarioController = new UpdateIsAdminController();
 
 usuariosRoutes.post("/", createUsuarioController.handle)
 
-usuariosRoutes.get("/", (req, res) => {
-    return listUsuarioController.handle(req, res);
-})
+usuariosRoutes.get("/", listUsuarioController.handle)
 
-usuariosRoutes.get("/:id", (req, res) => {
-    return listUsuarioByIdController.handle(req, res);
-})
+usuariosRoutes.get("/:id", listUsuarioByIdController.handle)
 
-usuariosRoutes.put("/:id", (req, res) => {
-    return updateUsuarioController.handle(req, res);
-})
+usuariosRoutes.put("/:id", updateUsuarioController.handle)
 
-usuariosRoutes.patch("/:id", (req, res) => {
-    return updatePosicaoUsuarioController.handle(req, res);
-})
+usuariosRoutes.patch("/:id", updatePosicaoUsuarioController.handle)
 
-usuariosRoutes.delete("/:id", (req, res) => {
-    return deleteUsuarioController.handle(req, res);
-})
+usuariosRoutes.patch("/isAdmin/:id", updateIsAdminUsuarioController.handle);
+
+usuariosRoutes.delete("/:id", deleteUsuarioController.handle)
 
 export { usuariosRoutes };

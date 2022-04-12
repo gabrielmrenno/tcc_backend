@@ -1,6 +1,7 @@
 import { prisma } from "../../../database/prismaClient";
 import { Usuario } from "../../model/Usuario";
-import { ICreateUsuarioDTO, ILoginUsuarioDTO, IUsuariosRepository } from "../IUsuariosRepository";
+import { IUpdateIsAdminDTO } from "../../useCases/Usuarios/UpdateIsAdmin/UpdateIsAdminUseCase";
+import { ICreateUsuarioDTO, IUsuariosRepository, IUpdateUsuarioDTO, IUpdatePosicaoUsuarioDTO } from "../IUsuariosRepository";
 
 
 class UsuariosRepository implements IUsuariosRepository {
@@ -11,28 +12,58 @@ class UsuariosRepository implements IUsuariosRepository {
     }
     async findByUsername(username: string): Promise<Usuario> {
         const usuario = await prisma.usuarios.findFirst({
-            where: { username: username }
-        });
+            where: { username: username },
+        })
 
         return usuario;
     }
-    findByLogin({ username, password }: ILoginUsuarioDTO): Usuario {
-        const usuario = this.usuarios.find(usuario => (usuario.username === username) && (usuario.password === password))
+
+    async findById(id: string): Promise<Usuario> {
+        const usuario = await prisma.usuarios.findFirst({
+            where: { id: id }
+        })
 
         return usuario;
     }
-    findById(id: string): Usuario {
-        const usuario = this.usuarios.find(usuario => usuario.idUsuario === id);
-
-        return usuario;
-    }
-    list(): Usuario[] {
-        return this.usuarios;
+    async list(): Promise<Usuario[]> {
+        return await prisma.usuarios.findMany()
     }
 
-    delete(usuario: Usuario): void {
-        const indexUsuario = this.usuarios.indexOf(usuario);
-        this.usuarios.splice(indexUsuario, 1);
+    async update({ nome, username, password, id }: IUpdateUsuarioDTO): Promise<void> {
+        await prisma.usuarios.update({
+            where: {
+                id: id,
+            },
+            data: {
+                nome: nome,
+                username: username,
+                password: password,
+            }
+        })
+    }
+
+    async updatePosicao({ posicao, id }: IUpdatePosicaoUsuarioDTO): Promise<void> {
+        await prisma.usuarios.update({
+            where: {
+                id: id,
+            },
+            data: {
+                posicao: posicao,
+            }
+        })
+    }
+
+    async updateIsAdmin({ id, isAdmin }: IUpdateIsAdminDTO): Promise<void> {
+        await prisma.usuarios.update({
+            where: { id: id },
+            data: { isAdmin }
+        })
+    }
+
+    async delete(id: string): Promise<void> {
+        await prisma.usuarios.delete({
+            where: { id: id },
+        })
     }
 
 }

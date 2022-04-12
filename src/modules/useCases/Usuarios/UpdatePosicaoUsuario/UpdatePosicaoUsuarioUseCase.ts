@@ -1,23 +1,25 @@
+import { inject, injectable } from "tsyringe";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
 
 interface IRequest {
     id: string;
-    posição: string;
-    isAdmin?: boolean;
+    posicao: string;
 }
 
+@injectable()
 class UpdatePosicaoUsuarioUseCase {
-    constructor(private usuariosRepository: IUsuariosRepository) { }
+    constructor(
+        @inject("UsuariosRepository")
+        private usuariosRepository: IUsuariosRepository) { }
 
-    execute({ id, posição, isAdmin }: IRequest): void {
-        const usuario = this.usuariosRepository.findById(id);
+    async execute({ id, posicao }: IRequest): Promise<void> {
+        const usuario = await this.usuariosRepository.findById(id);
 
         if (!usuario) {
             throw new Error("Usuario não encontrado");
         }
 
-        usuario.posição = posição;
-        isAdmin ? usuario.isAdmin = isAdmin : null;
+        await this.usuariosRepository.updatePosicao({ posicao, id });
     }
 }
 

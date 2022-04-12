@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
+import { hash } from "bcrypt";
 
 interface IRequest {
     nome: string;
@@ -14,7 +15,7 @@ class CreateUsuarioUseCase {
         @inject("UsuariosRepository")
         private usuariosRepository: IUsuariosRepository) { }
 
-    async execute({ nome, username, password, posicao }: IRequest): void {
+    async execute({ nome, username, password, posicao }: IRequest): Promise<void> {
 
         if (password.length < 5 || password.length > 15) {
             throw new Error("Password deve ter entre 5 e 15 caracteres");
@@ -25,7 +26,11 @@ class CreateUsuarioUseCase {
         if (usuario) {
             throw new Error("Username já está sendo usado");
         }
-        await this.usuariosRepository.create({ nome, username, password, posicao });
+
+        // hashing password
+        const passwordHash = await hash(password, 10);
+
+        await this.usuariosRepository.create({ nome, username, password: passwordHash, posicao });
     }
 }
 

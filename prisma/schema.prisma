@@ -25,8 +25,8 @@ model Produtos {
 
 model Usuarios {
   id        String   @id @default(uuid())
-  nome      String
-  username  String
+  nome      String   @unique
+  username  String   @unique
   password  String
   posicao   String
   isAdmin   Boolean  @default(false)
@@ -39,9 +39,9 @@ model Usuarios {
 
 model Clientes {
   id              String   @id @default(uuid())
-  tipoClientes    String
-  nome            String
-  nomeFantasia    String
+  tipoCliente     String
+  nome            String   @unique
+  nomeFantasia    String   @unique
   endereco        String
   bairro          String
   cidade          String
@@ -50,8 +50,8 @@ model Clientes {
   email           String
   nomeContato     String
   telefoneContato String
-  cnpj            String
-  desconto        Int
+  cnpj            String   @unique
+  desconto        Int      @default(0)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now())
 

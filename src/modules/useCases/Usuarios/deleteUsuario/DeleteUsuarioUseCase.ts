@@ -1,16 +1,19 @@
+import { inject, injectable } from "tsyringe";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
-
+@injectable()
 class DeleteUsuarioUseCase {
-    constructor( private usuariosRepository: IUsuariosRepository) {}
+    constructor(
+        @inject("UsuariosRepository")
+        private usuariosRepository: IUsuariosRepository) { }
 
-    execute(id: string): void {
-        const usuario = this.usuariosRepository.findById(id);
+    async execute(id: string): Promise<void> {
+        const usuario = await this.usuariosRepository.findById(id);
 
-        if(!usuario){
+        if (!usuario) {
             throw new Error("Usuario não encontrado");
         }
 
-        this.usuariosRepository.delete(usuario);
+        this.usuariosRepository.delete(id);
     }
 }
 
