@@ -1,5 +1,5 @@
-import express from "express";
-import "reflect-metadata"
+
+import { Router } from "express";
 
 
 import { produtosRoutes } from "./produtos.routes";
@@ -7,13 +7,11 @@ import { usuariosRoutes } from "./usuarios.routes";
 import { clientsRoutes } from "./clients.routes";
 import { authenticateRoutes } from "./authenticate.routes";
 
-const app = express();
+const router = Router();
 
-app.use(express.json());
+router.use("/produtos", produtosRoutes);
+router.use("/usuarios", usuariosRoutes);
+router.use("/clients", clientsRoutes);
+router.use("/login", authenticateRoutes);
 
-app.use("/produtos", produtosRoutes);
-app.use("/usuarios", usuariosRoutes);
-app.use("/clients", clientsRoutes);
-app.use("/login", authenticateRoutes);
-
-export { app };
+export { router };

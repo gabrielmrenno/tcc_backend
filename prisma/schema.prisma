@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//Todo Nome no singular
 model Produtos {
   id        String   @id @default(uuid())
   nome      String

@@ -5,15 +5,11 @@ import { ListUsuarioUseCase } from "./ListUsuarioUseCase";
 
 class ListUsuarioController {
     async handle(req: Request, res: Response): Promise<Response> {
-        try {
-            const listUsuarioUseCase = container.resolve(ListUsuarioUseCase)
+        const listUsuarioUseCase = container.resolve(ListUsuarioUseCase)
 
-            const usuarios = await listUsuarioUseCase.execute();
+        const usuarios = await listUsuarioUseCase.execute();
 
-            return res.json(usuarios);
-        } catch (err) {
-            return res.status(404).json({ error: err.message });
-        }
+        return res.json(usuarios);
     }
 }
 

@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
+import { AppError } from "../../../../errors/AppError";
 import { Produto } from "../../../model/Produto";
 
 import { ProdutosRepository } from "../../../repositories/implementations/ProdutosRepository";
@@ -18,7 +19,7 @@ class ListProdutoByIdUseCase {
         const produto = await this.produtoRepository.findById(id);
 
         if (!produto) {
-            throw new Error("ID inválido: este produto não existe.")
+            throw new AppError("ID inválido: este produto não existe.", 404)
         }
 
         return produto;

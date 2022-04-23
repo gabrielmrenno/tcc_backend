@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { Usuario } from "../../../model/Usuario";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
 @injectable()
@@ -11,7 +12,7 @@ class ListUsuarioUseCase {
         const usuarios = await this.usuariosRepository.list();
 
         if (usuarios.length === 0) {
-            throw new Error("Lista de usuários vazia");
+            throw new AppError("Lista de usuários vazia", 404);
         }
 
         return usuarios;

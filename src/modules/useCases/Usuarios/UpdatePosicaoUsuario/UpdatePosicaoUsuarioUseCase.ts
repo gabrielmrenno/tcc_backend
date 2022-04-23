@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
 
 interface IRequest {
@@ -16,7 +17,7 @@ class UpdatePosicaoUsuarioUseCase {
         const usuario = await this.usuariosRepository.findById(id);
 
         if (!usuario) {
-            throw new Error("Usuario não encontrado");
+            throw new AppError("Usuario não encontrado", 404);
         }
 
         await this.usuariosRepository.updatePosicao({ posicao, id });

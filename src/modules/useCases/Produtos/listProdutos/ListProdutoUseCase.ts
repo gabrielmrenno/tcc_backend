@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { Produto } from "../../../model/Produto";
 import { ProdutosRepository } from "../../../repositories/implementations/ProdutosRepository";
 
@@ -11,7 +12,7 @@ class ListProdutoUseCase {
         const produtos = await this.produtosRepository.list();
 
         if (produtos.length === 0) {
-            throw new Error("Lista de produtos vazia");
+            throw new AppError("Não há produtos para ser listado", 404);
         }
 
         return produtos;

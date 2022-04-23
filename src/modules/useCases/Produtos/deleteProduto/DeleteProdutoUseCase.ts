@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { ProdutosRepository } from "../../../repositories/implementations/ProdutosRepository";
 
 interface IRequest {
@@ -15,7 +16,7 @@ class DeleteProdutoUseCase {
         const produto = await this.produtosRepository.findById(id);
 
         if (!produto) {
-            throw new Error("ID inválido: este produto não existe.");
+            throw new AppError("ID inválido: este produto não existe.", 404);
         }
 
         this.produtosRepository.delete(id);

@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
 import { hash } from "bcrypt";
+import { AppError } from "../../../../errors/AppError";
 
 interface IRequest {
     nome: string;
@@ -18,13 +19,13 @@ class CreateUsuarioUseCase {
     async execute({ nome, username, password, posicao }: IRequest): Promise<void> {
 
         if (password.length < 5 || password.length > 15) {
-            throw new Error("Password deve ter entre 5 e 15 caracteres");
+            throw new AppError("Password deve ter entre 5 e 15 caracteres");
         }
 
         const usuario = await this.usuariosRepository.findByUsername(username);
 
         if (usuario) {
-            throw new Error("Username já está sendo usado");
+            throw new AppError("Username já está sendo usado");
         }
 
         // hashing password

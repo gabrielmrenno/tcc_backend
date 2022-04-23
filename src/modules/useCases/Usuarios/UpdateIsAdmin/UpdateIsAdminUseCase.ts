@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { UsuariosRepository } from "../../../repositories/implementations/UsuariosRepository";
 
 interface IUpdateIsAdminDTO {
@@ -17,7 +18,7 @@ export class UpdateIsAdminUseCase {
         const client = await this.usersRepository.findById(id);
 
         if (!client) {
-            throw new Error("Usuário não existe");
+            throw new AppError("Usuário não existe", 404);
         }
 
         await this.usersRepository.updateIsAdmin({ id, isAdmin });

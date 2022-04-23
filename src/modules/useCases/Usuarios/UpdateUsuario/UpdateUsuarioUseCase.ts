@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
 
 interface IRequest {
@@ -18,17 +19,17 @@ class UpdateUsuarioUseCase {
         const usuario = await this.usuariosRepository.findById(id);
 
         if (!usuario) {
-            throw new Error("Usuario inválido");
+            throw new AppError("Usuario inválido");
         }
 
         const usernameIsUsed = await this.usuariosRepository.findByUsername(username);
 
         if (usernameIsUsed) {
-            throw new Error("Username já existe");
+            throw new AppError("Username já existe");
         }
 
         if (password.length < 5 || password.length > 15) {
-            throw new Error("Password deve ter entre 5 e 15 caracteres");
+            throw new AppError("Password deve ter entre 5 e 15 caracteres");
         }
 
         await this.usuariosRepository.update({ nome, username, password, id });

@@ -1,5 +1,6 @@
 import { ProdutosRepository } from "../../../repositories/implementations/ProdutosRepository";
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 
 interface IRequest {
     nome: string;
@@ -20,7 +21,7 @@ class CreateProdutoUseCase {
         const ifProdutoExists = await this.produtosRepository.findByNome(nome);
 
         if (ifProdutoExists) {
-            throw new Error("Nome do Produto já está sendo usado");
+            throw new AppError("Nome do Produto já está sendo usado");
         }
 
         this.produtosRepository.create({ nome, grupo, unidade, preco, peso });

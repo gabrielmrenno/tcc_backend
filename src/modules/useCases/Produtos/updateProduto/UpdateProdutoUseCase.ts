@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { Produto } from "../../../model/Produto";
 import { ProdutosRepository } from "../../../repositories/implementations/ProdutosRepository";
 
@@ -21,7 +22,7 @@ class UpdateProdutoUseCase {
         const produto = await this.produtosRepository.findById(id);
 
         if (!produto) {
-            throw new Error("ID inválido: este produto não existe.");
+            throw new AppError("ID inválido: este produto não existe.", 404);
         }
 
         await this.produtosRepository.update({ nome, grupo, unidade, preco, peso, id });

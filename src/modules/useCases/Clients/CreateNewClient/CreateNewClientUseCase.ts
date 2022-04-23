@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { ClientesRepository } from "../../../repositories/implementations/ClientesRepository";
 interface ICreateClientDTO {
     nome: string;
@@ -26,7 +27,7 @@ class CreateNewClientUseCase {
         const ifClientExists = await this.clientesRepository.findByUniqueValues({ nome, nomeFantasia, cnpj });
 
         if (ifClientExists) {
-            throw new Error("Cliente já existe");
+            throw new AppError("Cliente já existe");
         }
 
         await this.clientesRepository.create({ nome, nomeFantasia, tipoCliente, endereco, bairro, cidade, cep, telefone, email, nomeContato, telefoneContato, cnpj, desconto });

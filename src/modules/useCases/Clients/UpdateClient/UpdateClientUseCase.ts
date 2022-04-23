@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { ClientesRepository } from "../../../repositories/implementations/ClientesRepository";
 
 interface IUpdateClient {
@@ -26,7 +27,7 @@ export class UpdateClientUseCase {
         const client = await this.clientsRepository.findById(id);
 
         if (!client) {
-            throw new Error("Usuário não existe");
+            throw new AppError("Usuário não existe", 404);
         }
 
         await this.clientsRepository.update({ id, nome, nomeFantasia, endereco, bairro, cidade, cep, telefone, email, nomeContato, telefoneContato });

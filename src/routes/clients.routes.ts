@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 
 import { CreateNewClientController } from "../modules/useCases/Clients/CreateNewClient/CreateNewClientController";
 import { DeleteClientController } from "../modules/useCases/Clients/DeleteClient/DeleteClientController";
@@ -15,6 +16,8 @@ const updateDescontoClientController = new UpdateDescontoClientController();
 const deleteClientController = new DeleteClientController();
 
 const clientsRoutes = Router();
+
+clientsRoutes.use(ensureAuthenticated);
 
 clientsRoutes.get("/", listAllClientsController.handle);
 

@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { Usuario } from "../../../model/Usuario";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
 
@@ -16,7 +17,7 @@ class ListUsuarioByIdUseCase {
         const usuario = await this.usuariosRepository.findById(id);
 
         if (!usuario) {
-            throw new Error("Usuario não econtrado");
+            throw new AppError("Usuario não econtrado", 404);
         }
 
         return usuario;

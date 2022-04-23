@@ -9,13 +9,9 @@ class ListProdutoByIdController {
         const listProdutoByIdUseCase = container.resolve(ListProdutoByIdUseCase);
 
         const { id } = req.params;
-        try {
-            const produto = await listProdutoByIdUseCase.execute({ id });
+        const produto = await listProdutoByIdUseCase.execute({ id });
 
-            return res.json(produto);
-        } catch (err) {
-            return res.status(404).json({ error: err.message });
-        }
+        return res.json(produto);
     }
 
 }

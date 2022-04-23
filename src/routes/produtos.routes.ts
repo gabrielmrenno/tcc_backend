@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 
 import { CreateProdutoController } from "../modules/useCases/Produtos/createProdutos/CreateProdutoController"
 import { DeleteProdutoController } from "../modules/useCases/Produtos/deleteProduto/DeleteProdutoController";
@@ -17,6 +18,8 @@ const updatePrecoProdutoController = new UpdatePrecoProdutoController();
 const updateProdutoController = new UpdateProdutoController();
 
 const produtosRoutes = Router();
+
+produtosRoutes.use(ensureAuthenticated);
 
 produtosRoutes.post("/", createProdutoController.handle);
 

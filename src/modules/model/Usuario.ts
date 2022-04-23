@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from "uuid";
 
 class Usuario {
-    idUsuario: string;
+    id: string;
     nome: string;
     username: string;
     password: string;

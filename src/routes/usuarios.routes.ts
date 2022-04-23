@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 import { CreateUsuarioController } from "../modules/useCases/Usuarios/createUsuario/CreateUsuarioController";
 import { DeleteUsuarioController } from "../modules/useCases/Usuarios/deleteUsuario/DeleteUsuarioController";
 import { ListUsuarioController } from "../modules/useCases/Usuarios/listUsuario/ListUsuarioController";
@@ -16,6 +17,8 @@ const listUsuarioByIdController = new ListUsuarioByIdController();
 const updateUsuarioController = new UpdateUsuarioController();
 const updatePosicaoUsuarioController = new UpdatePosicaoUsuarioController();
 const updateIsAdminUsuarioController = new UpdateIsAdminController();
+
+usuariosRoutes.use(ensureAuthenticated);
 
 usuariosRoutes.post("/", createUsuarioController.handle)
 

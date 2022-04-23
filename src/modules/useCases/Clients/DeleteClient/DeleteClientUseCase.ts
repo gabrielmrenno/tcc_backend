@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { ClientesRepository } from "../../../repositories/implementations/ClientesRepository";
 
 @injectable()
@@ -12,7 +13,7 @@ export class DeleteClientUseCase {
         const client = await this.clientsRepository.findById(id)
 
         if (!client) {
-            throw new Error("Usuario não existe");
+            throw new AppError("Usuario não existe");
         }
 
         await this.clientsRepository.delete(id);

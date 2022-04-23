@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { IUsuariosRepository } from "../../../repositories/IUsuariosRepository";
 @injectable()
 class DeleteUsuarioUseCase {
@@ -10,7 +11,7 @@ class DeleteUsuarioUseCase {
         const usuario = await this.usuariosRepository.findById(id);
 
         if (!usuario) {
-            throw new Error("Usuario não encontrado");
+            throw new AppError("Usuario não encontrado", 404);
         }
 
         this.usuariosRepository.delete(id);

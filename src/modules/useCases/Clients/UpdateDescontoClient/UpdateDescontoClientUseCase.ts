@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
 import { ClientesRepository } from "../../../repositories/implementations/ClientesRepository";
 
 interface IUpdateDescontoClientDTO {
@@ -17,7 +18,7 @@ export class UpdateDescontoClientUseCase {
         const client = await this.clientsRepository.findById(id);
 
         if (!client) {
-            throw new Error("Usuário não existe");
+            throw new AppError("Usuário não existe", 404);
         }
 
         await this.clientsRepository.updateDesconto({ id, desconto });
